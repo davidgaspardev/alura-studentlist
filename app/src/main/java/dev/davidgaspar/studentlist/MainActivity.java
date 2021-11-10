@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
 public class MainActivity extends Activity {
 
-    private LinearLayout container;
+    private ListView listView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        container = findViewById(R.id.main_activity_container);
+        listView = findViewById(R.id.main_list_view);
 
         List<String> students = new ArrayList<>(Arrays.asList(
                 "David Gaspar",
@@ -34,10 +34,9 @@ public class MainActivity extends Activity {
                 "Jessica Sousa"
         ));
 
-        for (int i = 0; i < students.size(); i++) {
-            TextView studentView = new TextView(this);
-            studentView.setText(students.get(i));
-            container.addView(studentView);
-        }
+        listView.setAdapter(new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                students));
     }
 }
