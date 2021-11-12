@@ -3,14 +3,14 @@ package dev.davidgaspar.studentlist;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
 
@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setTitle("Student List");
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.main_list_view);
