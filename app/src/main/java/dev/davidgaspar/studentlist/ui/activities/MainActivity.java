@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import dev.davidgaspar.studentlist.R;
+import dev.davidgaspar.studentlist.model.Student;
+import dev.davidgaspar.studentlist.repository.StudentRepo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,26 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("Student List");
         setContentView(R.layout.activity_main);
-
         listView = findViewById(R.id.main_list_view);
-
-        List<String> students = new ArrayList<>(Arrays.asList(
-                "David Gaspar",
-                "Luiz Gustavo",
-                "Julia Herman",
-                "Julia Eirrof",
-                "Raul Zerefino",
-                "Eugênio Sousa",
-                "Ana Paula Martins",
-                "Renan Silveira",
-                "Jessica Sousa"
-        ));
-
-        listView.setAdapter(new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                students));
-
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,5 +38,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ArrayList<Student> students = StudentRepo.getAllStudents();
+
+        listView.setAdapter(new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                students));
     }
 }
