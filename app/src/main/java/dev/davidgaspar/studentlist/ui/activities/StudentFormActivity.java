@@ -14,6 +14,7 @@ import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
 public class StudentFormActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String APPBAR_TITLE = "New student";
 
     final Repository<Student> repository = new StudentRepo();
 
@@ -24,26 +25,39 @@ public class StudentFormActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(APPBAR_TITLE);
         setContentView(R.layout.activity_form_student);
+        initEditsText();
+        settingSaveButton();
+    }
 
+    private void initEditsText() {
         edtName = findViewById(R.id.edt_name);
         edtPhone = findViewById(R.id.edt_phone);
         edtEmail = findViewById(R.id.edt_email);
+    }
 
+    private void settingSaveButton() {
         Button btnSave = findViewById(R.id.btn_save_student);
         btnSave.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btn_save_student) {
-            String name = edtName.getText().toString();
-            String phone = edtPhone.getText().toString();
-            String email = edtEmail.getText().toString();
+        Student student = createStudent();
+        saveStudent(student);
+    }
 
-            Student student = new Student(name, phone, email);
-            repository.save(student);
-            finish();
-        }
+    private Student createStudent() {
+        String name = edtName.getText().toString();
+        String phone = edtPhone.getText().toString();
+        String email = edtEmail.getText().toString();
+
+        return new Student(name, phone, email);
+    }
+
+    private void saveStudent(Student student) {
+        repository.save(student);
+        finish();
     }
 }

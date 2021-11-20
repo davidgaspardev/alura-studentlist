@@ -1,8 +1,6 @@
 package dev.davidgaspar.studentlist.ui.activities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,30 +18,46 @@ import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String APPBAR_TITLE = "Student List";
 
     private ListView listView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setTitle("Student List");
+        setTitle(APPBAR_TITLE);
         setContentView(R.layout.activity_main);
+        initListView();
+        settingAddStudentButton();
+    }
+
+    private void initListView() {
         listView = findViewById(R.id.main_list_view);
+    }
+
+    private void settingAddStudentButton() {
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), StudentFormActivity.class);
-                startActivity(intent);
+                openStudentFormActivity();
             }
         });
+    }
+
+    private void openStudentFormActivity() {
+        Intent intent = new Intent(this, StudentFormActivity.class);
+        startActivity(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        loadListStudent();
+    }
+
+    private void loadListStudent() {
         ArrayList<Student> students = StudentRepo.getAllStudents();
 
         listView.setAdapter(new ArrayAdapter<>(
