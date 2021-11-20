@@ -1,4 +1,4 @@
-package dev.davidgaspar.studentlist;
+package dev.davidgaspar.studentlist.ui.activities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import dev.davidgaspar.studentlist.R;
 
 public class MainActivity extends AppCompatActivity {
 
