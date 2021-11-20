@@ -3,12 +3,17 @@ package dev.davidgaspar.studentlist.ui.activities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import dev.davidgaspar.studentlist.R;
 
@@ -41,5 +46,14 @@ public class MainActivity extends AppCompatActivity {
                 this,
                 android.R.layout.simple_list_item_1,
                 students));
+
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), StudentFormActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
