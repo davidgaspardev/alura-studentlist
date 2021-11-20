@@ -4,15 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import dev.davidgaspar.studentlist.R;
+import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
+import dev.davidgaspar.studentlist.repository.StudentRepo;
 
 public class StudentFormActivity extends AppCompatActivity implements View.OnClickListener {
+
+    final Repository<Student> repository = new StudentRepo();
 
     private EditText edtName;
     private EditText edtPhone;
@@ -39,8 +42,8 @@ public class StudentFormActivity extends AppCompatActivity implements View.OnCli
             String email = edtEmail.getText().toString();
 
             Student student = new Student(name, phone, email);
-
-            Toast.makeText(this, "Student saved ("+student.getName()+", "+student.getPhone()+", "+student.getEmail()+")", Toast.LENGTH_SHORT).show();
+            repository.save(student);
+            finish();
         }
     }
 }
