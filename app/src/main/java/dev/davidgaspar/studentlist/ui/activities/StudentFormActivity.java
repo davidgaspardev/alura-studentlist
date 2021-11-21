@@ -9,14 +9,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import dev.davidgaspar.studentlist.R;
 import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
-public class StudentFormActivity extends AppCompatActivity implements View.OnClickListener {
+public class StudentFormActivity extends Dactivity implements View.OnClickListener {
     private static final String[] APPBAR_TITLE = {
             "New student",
             "Edit student"
@@ -36,15 +35,23 @@ public class StudentFormActivity extends AppCompatActivity implements View.OnCli
         initEditsText();
         settingSaveButton();
 
+        loadStudent();
+
+        setAppbarTitle();
+    }
+
+    private void setAppbarTitle() {
+        setTitle(student == null ? APPBAR_TITLE_NEW_STUDENT : APPBAR_TITLE_EDIT_STUDENT);
+    }
+
+    private void loadStudent() {
         Intent intent = getIntent();
-        student = (Student) intent.getSerializableExtra("student");
+        student = (Student) intent.getSerializableExtra(EXTRA_STUDENT);
         if (student != null) {
             edtName.setText(student.getName());
             edtPhone.setText(student.getPhone());
             edtEmail.setText(student.getEmail());
         }
-
-        setTitle(APPBAR_TITLE[student == null ? 0 : 1]);
     }
 
     private void initEditsText() {

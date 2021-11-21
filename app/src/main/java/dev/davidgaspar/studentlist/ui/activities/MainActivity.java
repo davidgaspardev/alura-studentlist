@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,15 +17,13 @@ import dev.davidgaspar.studentlist.R;
 import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String APPBAR_TITLE = "Student List";
-
+public class MainActivity extends Dactivity {
     private ListView listView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(APPBAR_TITLE);
+        setTitle(R.string.app_name);
         setContentView(R.layout.activity_main);
         initListView();
         settingAddStudentButton();
@@ -42,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStudentFormActivity();
+                openStudentFormInSaveMode();
             }
         });
     }
 
-    private void openStudentFormActivity() {
+    private void openStudentFormInSaveMode() {
         Intent intent = new Intent(this, StudentFormActivity.class);
         startActivity(intent);
     }
@@ -61,19 +57,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadListStudent() {
         final ArrayList<Student> students = StudentRepo.getAllStudents();
+        settingListAdapter(students);
+        settingListOnItemClick();
+    }
 
+    private void settingListAdapter(ArrayList<Student> students) {
         listView.setAdapter(new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 students));
+    }
 
+    private void settingListOnItemClick() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
-                Intent intent = new Intent(MainActivity.this, StudentFormActivity.class);
-                intent.putExtra("student", students.get(index));
-                startActivity(intent);
+                openStudentFormInEditMode(adapterView);
             }
         });
+    }
+
+    private void openStudentFormInEditMode(AdapterView<?> adapterView) {
+        Intent intent = new Intent(MainActivity.this, StudentFormActivity.class);
+        intent.putExtra(EXTRA_STUDENT, (Student) adapterView.getSelectedItem());
+        startActivity(intent);
     }
 }
