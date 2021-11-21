@@ -1,6 +1,8 @@
 package dev.davidgaspar.studentlist.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
@@ -29,6 +31,14 @@ public class StudentFormActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_form_student);
         initEditsText();
         settingSaveButton();
+
+        Intent intent = getIntent();
+        Student student = (Student) intent.getSerializableExtra("student");
+        if (student != null) {
+            edtName.setText(student.getName());
+            edtPhone.setText(student.getPhone());
+            edtEmail.setText(student.getEmail());
+        }
     }
 
     private void initEditsText() {

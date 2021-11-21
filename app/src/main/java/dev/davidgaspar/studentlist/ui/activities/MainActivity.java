@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,11 +60,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadListStudent() {
-        ArrayList<Student> students = StudentRepo.getAllStudents();
+        final ArrayList<Student> students = StudentRepo.getAllStudents();
 
         listView.setAdapter(new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 students));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
+                Intent intent = new Intent(MainActivity.this, StudentFormActivity.class);
+                intent.putExtra("student", students.get(index));
+                startActivity(intent);
+            }
+        });
     }
 }

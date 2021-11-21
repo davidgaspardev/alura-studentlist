@@ -2,9 +2,11 @@ package dev.davidgaspar.studentlist.model;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 import dev.davidgaspar.studentlist.helper.Model;
 
-public class Student extends Model {
+public class Student extends Model implements Serializable {
     // Attributes
     private final String name;
     private final String phone;
