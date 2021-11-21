@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +44,7 @@ public class MainActivity extends Dactivity {
 
         settingListAdapter();
         settingListOnItemClick();
-        settingListOnItemLongClick();
+        registerForContextMenu(listView);
     }
 
     private void settingListAdapter() {
@@ -66,16 +69,19 @@ public class MainActivity extends Dactivity {
         startActivity(intent);
     }
 
-    private void settingListOnItemLongClick() {
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                int studentId = ((Student) adapterView.getItemAtPosition(position)).getId();
-                studentRepo.delete(studentId);
-                syncStudentList();
-                return true;
-            }
-        });
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo)
+                item.getMenuInfo();
+
+        Student student = studentListAdapter.getItem(menuInfo.position);
+        if (student != null) removeStudent(student);
+        return super.onContextItemSelected(item);
+    }
+
+    private void removeStudent(Student student) {
+        studentRepo.delete(student.getId());
+        studentListAdapter.remove(student);
     }
 
     private void settingAddStudentButton() {
@@ -91,6 +97,12 @@ public class MainActivity extends Dactivity {
     private void openStudentFormInSaveMode() {
         Intent intent = new Intent(this, StudentFormActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Remove");
     }
 
     @Override
