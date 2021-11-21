@@ -32,6 +32,16 @@ public class StudentRepo implements Repository<Student> {
     }
 
     @Override
+    public void delete(int id) {
+        for (int i = 0; i < students.size(); i++) {
+            if(students.get(i).getId() == id) {
+                students.remove(i);
+                return;
+            }
+        }
+    }
+
+    @Override
     public boolean alreadyExist(Student student) {
         for (int i = 0; i < students.size(); i++) {
             if (isStudentEqual(student, students.get(i))) {
