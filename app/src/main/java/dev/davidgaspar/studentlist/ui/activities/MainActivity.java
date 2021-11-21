@@ -73,9 +73,18 @@ public class MainActivity extends Dactivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo)
                 item.getMenuInfo();
-
         Student student = studentListAdapter.getItem(menuInfo.position);
-        if (student != null) removeStudent(student);
+
+        if (student != null) {
+            switch (item.getItemId()) {
+                case R.id.menu_edit:
+                    openStudentFormInEditMode(student);
+                    break;
+                case R.id.menu_remove:
+                    removeStudent(student);
+                    break;
+            }
+        }
         return super.onContextItemSelected(item);
     }
 
@@ -102,7 +111,7 @@ public class MainActivity extends Dactivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add("Remove");
+        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
     }
 
     @Override
