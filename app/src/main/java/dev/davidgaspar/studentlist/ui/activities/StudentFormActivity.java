@@ -2,12 +2,14 @@ package dev.davidgaspar.studentlist.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import dev.davidgaspar.studentlist.R;
@@ -15,11 +17,7 @@ import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
-public class StudentFormActivity extends Dactivity implements View.OnClickListener {
-    private static final String[] APPBAR_TITLE = {
-            "New student",
-            "Edit student"
-    };
+public class StudentFormActivity extends Dactivity {
     private Student student;
 
     final Repository<Student> repository = new StudentRepo();
@@ -33,11 +31,39 @@ public class StudentFormActivity extends Dactivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_student);
         initEditsText();
-        settingSaveButton();
 
         loadStudent();
 
         setAppbarTitle();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_form, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_activity_form_save) {
+            onClickSave();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void onClickSave() {
+        try {
+            if (student != null){
+                fillStudent();
+                editStudent();
+            } else {
+                createStudent();
+                saveStudent();
+            }
+            finish();
+        } catch (Error e) {
+            showMessage(e.getMessage());
+        }
     }
 
     private void setAppbarTitle() {
@@ -58,27 +84,6 @@ public class StudentFormActivity extends Dactivity implements View.OnClickListen
         edtName = findViewById(R.id.edt_name);
         edtPhone = findViewById(R.id.edt_phone);
         edtEmail = findViewById(R.id.edt_email);
-    }
-
-    private void settingSaveButton() {
-        Button btnSave = findViewById(R.id.btn_save_student);
-        btnSave.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        try {
-            if (student != null){
-                fillStudent();
-                editStudent();
-            } else {
-                createStudent();
-                saveStudent();
-            }
-            finish();
-        } catch (Error e) {
-            showMessage(e.getMessage());
-        }
     }
 
     private void fillStudent() {
