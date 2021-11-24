@@ -1,16 +1,12 @@
 package dev.davidgaspar.studentlist.ui.activities;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +19,7 @@ import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
-public class MainActivity extends Dactivity {
+public class MainActivity extends AppActivity {
     private static final String LOG_TAG = "MainActivity";
 
     private ListView listView;
@@ -111,7 +107,7 @@ public class MainActivity extends Dactivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
     }
 
     @Override

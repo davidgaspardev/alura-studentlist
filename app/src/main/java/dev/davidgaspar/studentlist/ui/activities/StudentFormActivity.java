@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,7 +15,7 @@ import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
 
-public class StudentFormActivity extends Dactivity {
+public class StudentFormActivity extends AppActivity {
     private Student student;
 
     final Repository<Student> repository = new StudentRepo();
@@ -45,7 +43,7 @@ public class StudentFormActivity extends Dactivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_activity_form_save) {
+        if (item.getItemId() == R.id.menu_save) {
             onClickSave();
         }
         return super.onOptionsItemSelected(item);
