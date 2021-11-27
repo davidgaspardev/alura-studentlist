@@ -6,7 +6,6 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -18,12 +17,13 @@ import dev.davidgaspar.studentlist.R;
 import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
 import dev.davidgaspar.studentlist.repository.StudentRepo;
+import dev.davidgaspar.studentlist.ui.adapter.StudentListAdapter;
 
 public class MainActivity extends AppActivity {
     private static final String LOG_TAG = "MainActivity";
 
     private ListView listView;
-    private ArrayAdapter<Student> studentListAdapter;
+    private StudentListAdapter studentListAdapter;
     private Repository<Student> studentRepo = new StudentRepo();
 
     @Override
@@ -44,9 +44,8 @@ public class MainActivity extends AppActivity {
     }
 
     private void settingListAdapter() {
-        studentListAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1);
+        studentListAdapter = new StudentListAdapter(this);
+
         listView.setAdapter(studentListAdapter);
     }
 
@@ -118,7 +117,8 @@ public class MainActivity extends AppActivity {
     }
 
     private void syncStudentList() {
-        studentListAdapter.clear();
-        studentListAdapter.addAll(StudentRepo.getAllStudents());
+//        studentListAdapter.clear();
+//        studentListAdapter.addAll(StudentRepo.getAllStudents());
+        studentListAdapter.refresh(StudentRepo.getAllStudents());
     }
 }
