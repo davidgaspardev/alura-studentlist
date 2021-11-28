@@ -37,20 +37,27 @@ public class StudentListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int index, View view, ViewGroup viewGroup) {
-        View itemView =  LayoutInflater.from(context).inflate(R.layout.item_student, viewGroup,false);
-        loadView(index, itemView);
+    public View getView(int index, View child, ViewGroup parent) {
+        View view;
+        ViewHolder holder;
 
-        return itemView;
+        if (child == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_student, parent,false);
+            holder = new ViewHolder(view);
+            view.setTag(holder);
+        } else {
+            view = child;
+            holder = (ViewHolder) child.getTag();
+        }
+        loadData(index, holder);
+
+        return view;
     }
 
-    private void loadView(int index, View view) {
-        TextView name = view.findViewById(R.id.txt_student_name);
-        TextView phone = view.findViewById(R.id.txt_student_phone);
-
+    private void loadData(int index, ViewHolder holder) {
         Student student = studentList.get(index);
-        name.setText(student.getName());
-        phone.setText(student.getPhone());
+        holder.name.setText(student.getName());
+        holder.phone.setText(student.getPhone());
     }
 
     public void clear() {
@@ -70,5 +77,17 @@ public class StudentListAdapter extends BaseAdapter {
     public void remove(Student student) {
         studentList.remove(student);
         notifyDataSetChanged();
+    }
+
+    private static class ViewHolder {
+
+        private final TextView name;
+        private final TextView phone;
+
+        ViewHolder(View view) {
+            this.name = view.findViewById(R.id.txt_student_name);
+            this.phone = view.findViewById(R.id.txt_student_phone);
+        }
+
     }
 }

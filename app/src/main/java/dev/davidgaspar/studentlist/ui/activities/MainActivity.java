@@ -2,6 +2,7 @@ package dev.davidgaspar.studentlist.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +21,10 @@ import dev.davidgaspar.studentlist.repository.StudentRepo;
 import dev.davidgaspar.studentlist.ui.adapter.StudentListAdapter;
 
 public class MainActivity extends AppActivity {
-    private static final String LOG_TAG = "MainActivity";
 
     private ListView listView;
     private StudentListAdapter studentListAdapter;
-    private Repository<Student> studentRepo = new StudentRepo();
+    private final Repository<Student> studentRepo = new StudentRepo();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,12 +50,7 @@ public class MainActivity extends AppActivity {
     }
 
     private void settingListOnItemClick() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                openStudentFormInEditMode((Student) adapterView.getItemAtPosition(position));
-            }
-        });
+        listView.setOnItemClickListener((adapterView, view, position, id) -> openStudentFormInEditMode((Student) adapterView.getItemAtPosition(position)));
     }
 
     private void openStudentFormInEditMode(Student student) {
@@ -69,7 +64,6 @@ public class MainActivity extends AppActivity {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo)
                 item.getMenuInfo();
         Student student = studentListAdapter.getItem(menuInfo.position);
-
         if (student != null) {
             switch (item.getItemId()) {
                 case R.id.menu_edit:
@@ -83,19 +77,21 @@ public class MainActivity extends AppActivity {
         return super.onContextItemSelected(item);
     }
 
-    private void removeStudent(Student student) {
-        studentRepo.delete(student.getId());
-        studentListAdapter.remove(student);
+    private void removeStudent(final Student student) {
+        new AlertDialog.Builder(this)
+                .setTitle("Removing student")
+                .setMessage("Are you sure you want to remove the student?")
+                .setPositiveButton("Yes", (dialogInterface, i) -> {
+                    studentRepo.delete(student.getId());
+                    studentListAdapter.remove(student);
+                })
+                .setNegativeButton("Not", null)
+                .show();
     }
 
     private void settingAddStudentButton() {
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openStudentFormInSaveMode();
-            }
-        });
+        fab.setOnClickListener(view -> openStudentFormInSaveMode());
     }
 
     private void openStudentFormInSaveMode() {

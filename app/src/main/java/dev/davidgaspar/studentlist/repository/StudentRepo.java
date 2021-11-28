@@ -1,13 +1,12 @@
 package dev.davidgaspar.studentlist.repository;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 import dev.davidgaspar.studentlist.helper.Repository;
 import dev.davidgaspar.studentlist.model.Student;
 
 public class StudentRepo implements Repository<Student> {
-    private static ArrayList<Student> students = new ArrayList<>();
+    private static final ArrayList<Student> students = new ArrayList<>();
     private static int id = 1;
 
     public static ArrayList<Student> getAllStudents() {
